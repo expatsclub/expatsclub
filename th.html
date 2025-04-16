@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ExpatsClub Landing Page</title>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- הוספת הספריות הנדרשות בhead -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .elegant-font {
+            font-family: 'Lora', serif;
+        }
+
+        .lang-selector {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            z-index: 6;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flag-icon {
+            width: 1.2em;
+            height: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        .lang-dropdown div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+
+        .lang-dropdown div:hover {
+            background: rgba(233, 69, 96, 0.3);
+        }
+
+        section {
+            padding: 0;
+        }
+
+        #main-content {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main-hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* אפקט נצנוץ כוכבים */
+        .stars {
+            position: absolute;
+            width: 100vw;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* יצירת 50 כוכבים רנדומליים */
+        .stars::before,
+        .stars::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            /* הגדלנו את הגובה */
+            background-image: radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+            opacity: 0.3;
+            left: 0;
+            right: 0;
+        }
+
+        .stars::before {
+            top: -100%;
+            /* התחלה מחוץ לאזור הנראה */
+            animation: moveStars 120s linear infinite;
+        }
+
+        .stars::after {
+            top: 0;
+            animation: moveStars 120s linear infinite;
+            animation-delay: -60s;
+        }
+
+        @keyframes moveStars {
+            0% {
+                transform: translateY(50%);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        /* גלים דינמיים */
+        .waves {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            background:
+                linear-gradient(45deg, #e94560 0%, transparent 80%),
+                linear-gradient(-45deg, #533483 0%, transparent 80%);
+            filter: blur(30px);
+            animation: waveMove 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes waveMove {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            100% {
+                transform: scale(1.2) rotate(5deg);
+            }
+        }
+
+        /* עדכון סגנונות טקסט */
+        .headline {
+            color: #ffffff;
+            font-size: 5em;
+            text-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+            }
+
+            to {
+                text-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+            }
+        }
+
+        .headline.visible {
+            opacity: 1;
+        }
+
+        #dynamic-text span {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ffffff, #f0f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            opacity: 0;
+            font-weight: 600;
+            display: inline;
+        }
+
+        #dynamic-text span::after {
+            content: "\00a0";
+            /* הקטנה לרווח קשיח אחד */
+        }
+
+        #dynamic-text span:last-child::after {
+            content: "";
+            /* שמירה על ביטול הרווחים אחרי המקטע האחרון */
+        }
+
+        #phrase1,
+        #phrase2,
+        #phrase3 {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .scroll-hint {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            animation: float 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        .scroll-hint-wrapper {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            animation: bounceHint 1.5s ease-in-out infinite;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes bounceHint {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        .section-title,
+        .expanding-title,
+        .headline {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff4d6d 0%, #845ec2 100%);
+            border-radius: 3px;
+        }
+
+        #who-we-are .white-section .content-wrapper .intro-text,
+        #who-we-are .content-wrapper .intro-text {
+            font-size: 1.5em !important;
+            font-family: 'Poppins', sans-serif;
+            max-width: 800px;
+            margin: 0 auto 5rem !important;
+            /* הקטנה משמעותית של המרווח התחתון */
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            text-align: center;
+        }
+
+        ul li {
+            margin-bottom: 0.7rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+
+        button {
+            padding: 1.2rem 2.5rem;
+            margin: 2rem auto;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff4d6d 0%, #845ec2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #845ec2 0%, #ff4d6d 100%);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+            transform: translateY(-2px);
+        }
+
+        form {
+            margin-top: 2rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            max-width: 600px;
+            margin: 3rem auto;
+        }
+
+        input {
+            display: block;
+            margin: 1rem auto;
+            padding: 1rem;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid rgba(255, 77, 109, 0.3);
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ff4d6d;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
+            outline: none;
+        }
+
+        .form-container p {
+            font-size: 1.1em;
+            margin-top: 1.5rem;
+            color: #ffffff;
+        }
+
+        /* Additional Section Styling */
+        .white-section,
+        .colored-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+        }
+
+        /* הגדרת הסקשן הראשי */
+        body #who-we-are.section-container {
+            min-height: 100vh !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* הגדרת הגלים - החזרה למצב הקודם */
+        .section-waves {
+            position: absolute !important;
+            width: 100% !important;
+            height: 100% !important;
+            opacity: 0.2;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            /* החזרת הרקע המקורי */
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .interactive-steps {
+            min-height: 300px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .step-container {
+            position: absolute;
+            width: 100%;
+        }
+
+        .step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            font-size: 1.7em;
+            margin: 20px 0;
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .arrow-hint {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin: 20px 0;
+            font-size: 1.7em;
+            animation: bounceHint 1.5s ease-in-out infinite;
+            color: rgba(255, 77, 109, 0.8);
+        }
+
+        .arrow-hint.visible {
+            opacity: 1;
+        }
+
+        .section-container {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* הגדרת wrapper הכותרת */
+        .title-wrapper {
+            height: 10vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-top: 2rem !important;
+            position: relative !important;
+            z-index: 2 !important;
+        }
+
+        .expanding-title {
+            font-size: 3em;
+            transition: all 0.7s ease;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .expanding-title.active {
+            font-size: 5em;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .expanding-title.shrink {
+            font-size: 2.5em;
+        }
+
+        .content-wrapper {
+            margin-top: 8rem;
+        }
+
+        .content-wrapper.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title.step {
+            font-size: 2.5em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            margin-bottom: 2rem;
+        }
+
+        .section-title.step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animated-advantages {
+            list-style: none;
+            padding: 0;
+            margin: 2rem auto;
+            max-width: 1200px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .advantage-item {
+            font-size: 1.2em;
+            margin: 1.5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            padding: 0 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+        }
+
+        .advantage-item.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .advantage-item.shrink {
+            font-size: 1.2em;
+            transition: all 0.3s ease-out;
+        }
+
+        .advantage-item.shift-right {
+            transform: translateX(50px);
+        }
+
+        .advantage-item.shift-left {
+            transform: translateX(-50px);
+        }
+
+        .advantage-item:last-child {
+            border-bottom: none;
+        }
+
+        .center-wrapper {
+            z-index: 3;
+            margin-top: 4rem;
+            transform: translateY(2rem);
+            position: relative;
+        }
+
+        /* עדכון צבע טקסט בורר שפה */
+        .lang-selector,
+        #current-lang,
+        .lang-dropdown div {
+            color: #ffffff;
+        }
+
+        /* החזרת הצבעים המקוריים לטקסט הדינמי */
+        #dynamic-text span {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ffffff, #f0f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            opacity: 0;
+            font-weight: 600;
+        }
+
+        /* שמירה על אנימציות מקוריות */
+        #phrase1,
+        #phrase2,
+        #phrase3 {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* תיקון כפתור הגלילה */
+        .scroll-hint-wrapper {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* הגדלת הפונט של הטקסט */
+        .white-section p {
+            font-size: 2em;
+            color: #ffffff;
+        }
+
+        /* עדכון צבע הטקסט בטופס */
+        .form-container p {
+            font-size: 1.1em;
+            margin-top: 1.5rem;
+            color: #ffffff;
+        }
+
+        /* Media Queries למובייל - לא משפיע על גרסת המחשב */
+        @media screen and (max-width: 768px) {
+
+            .title-wrapper {
+                height: 10vh;
+                align-items: flex-start;
+            }
+
+            .content-wrapper {
+                margin-top: 3rem;
+            }
+
+            .content-wrapper {
+                margin-top: 3rem;
+                /* התאמת המרווח מהכותרת לתוכן */
+            }
+
+            #who-we-are {
+                padding-top: 0rem;
+                /* הקטנת הריפוד העליון */
+            }
+
+            /* הקטנת הפונט של הטקסט המבוא */
+            .white-section .intro-text {
+                font-size: 1.19em !important;
+            }
+
+            /* הקטנת הפונט של הצעדים - אבל לא של הכותרת */
+            .colored-section .step:not(#step0) {
+                font-size: 1.19em !important;
+            }
+
+            /* הקטנת הפונט של היתרונות */
+            .white-section .animated-advantages .advantage-item {
+                font-size: 0.7em !important;
+            }
+
+            /* הקטנת הפונט של ה-worth it */
+            .colored-section .worth-it-wrapper ul {
+                font-size: 1.0em !important;
+            }
+
+            /* הקטנת הפונט של כותרת המשנה של הטופס */
+            .white-section .action-subtitle {
+                font-size: 0.9em !important;
+            }
+
+            input[name="Full Name"],
+            input[name="Business Name"] {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            /* התאמות כותרת ראשית */
+            .headline {
+                font-size: 3em;
+            }
+
+            #dynamic-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            #dynamic-text span {
+                font-size: 1.8em;
+                display: block;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            /* התאמת גודל טקסטים */
+            .intro-text {
+                font-size: 1.2em;
+                padding: 0 1rem;
+            }
+
+            .white-section p {
+                font-size: 1.5em;
+            }
+
+            /* התאמת רשימות וצעדים */
+            .step {
+                font-size: 1.5em;
+                white-space: normal;
+                /* מאפשר שבירת שורות במובייל */
+                padding: 0 1rem;
+            }
+
+            .advantage-item {
+                font-size: 1em;
+            }
+
+            .advantage-item.appear {
+                font-size: 1.1em;
+            }
+
+            /* התאמת כפתורים */
+            button {
+                padding: 1rem 2rem;
+                width: 90%;
+                max-width: 300px;
+            }
+
+            /* התאמת טופס */
+            .form-container {
+                padding: 1.5rem;
+                margin: 2rem 1rem;
+            }
+
+            input {
+                width: 90%;
+            }
+
+            /* התאמת רווחים */
+            .section-container {
+                padding: 1rem;
+            }
+
+            .center-wrapper {
+                margin-top: 2rem;
+                padding: 0 1rem;
+            }
+
+            /* התאמת בורר שפה */
+            .lang-selector {
+                padding: 0.3rem 0.8rem;
+            }
+
+            /* התאמת כותרות משניות */
+            .section-title {
+                font-size: 2em;
+                padding: 0 1rem;
+            }
+
+            .expanding-title {
+                font-size: 2em;
+            }
+
+            .expanding-title.active {
+                font-size: 2.5em;
+            }
+
+            /* התאמת מרווחים בין אלמנטים */
+            .arrow-hint {
+                margin: 0.5rem 0;
+            }
+
+            .interactive-steps {
+                min-height: 450px;
+                /* הגדלת הגובה המינימלי במובייל */
+            }
+
+            /* התאמת אנימציות */
+            @keyframes moveStars {
+                0% {
+                    transform: translateY(100%);
+                }
+
+                100% {
+                    transform: translateY(-100%);
+                }
+            }
+
+            /* התאמת גלים */
+            .waves {
+                opacity: 0.2;
+            }
+
+            .form-container p {
+                font-size: 0.9em;
+                /* הקטנת הפונט במובייל */
+            }
+
+            .title-wrapper {
+                height: 20vh;
+                margin-top: 1rem;
+                align-items: center;
+            }
+
+            .content-wrapper {
+                margin-top: 1rem;
+            }
+
+            #who-we-are {
+                padding-top: 1rem;
+            }
+
+            /* מיקוד ספציפי יותר לכותרת */
+            #who-we-are .section-title.expanding-title {
+                margin-top: -2rem;
+                /* מרווח שלילי משמעותי */
+                position: relative;
+                /* הוספת מיקום יחסי */
+                z-index: 2;
+                /* וידוא שהכותרת מעל אלמנטים אחרים */
+            }
+
+            /*#who-we-are.section-container {
+                min-height: 100vh !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                padding: 2rem;
+            }*/
+
+            #who-we-are .content-wrapper {
+                margin-top: 3rem;
+                /* החזרת המרווח השלילי שהיה קודם */
+                position: relative;
+                z-index: 1;
+            }
+
+            #who-we-are .content-wrapper button {
+                position: relative;
+                margin-top: 5rem;
+                margin-bottom: 1rem;
+            }
+
+            .white-section .intro-text {
+                font-size: 1.19em !important;
+                /* שמירה על הגודל במובייל */
+            }
+        }
+
+        /* סגנונות חדשים רק לחלק של Why it's worth it */
+        .worth-it-wrapper {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.7s ease;
+        }
+
+        .worth-it-wrapper.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .worth-it-title {
+            transition: all 0.7s ease;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .worth-it-title.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* סגנונות חדשים לחלק של Take action */
+        .action-title {
+            animation: pulseAndGlow 2s infinite;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-subtitle {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+            animation-delay: 0.5s;
+            text-align: center;
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes pulseAndGlow {
+            0% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+            }
+
+            50% {
+                transform: scale(1.1);
+                text-shadow: 0 0 20px rgba(233, 69, 96, 0.8),
+                    0 0 30px rgba(233, 69, 96, 0.4);
+            }
+
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        select {
+            display: block;
+            margin: 1rem auto;
+            padding: 1rem;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid rgba(255, 77, 109, 0.3);
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+            color: #757575;
+            /* צבע ברירת המחדל - אפור */
+        }
+
+        /* רק האופציה הראשונה (הפלייסהולדר) תהיה אפורה */
+        select option[value=""][disabled] {
+            color: #757575;
+        }
+
+        /* כל האופציות האחרות יהיו שחורות */
+        select option:not([value=""][disabled]) {
+            color: black;
+        }
+
+        /* כאשר הפלייסהולדר נבחר, הטקסט בתיבה יהיה אפור */
+        select option[disabled]:checked {
+            color: #757575;
+        }
+
+        /* כאשר נבחרת אופציה אמיתית, הטקסט יהיה שחור */
+        select:has(option:checked:not([disabled])) {
+            color: black;
+        }
+
+        .phone-input-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem auto;
+        }
+
+        .country-select {
+            width: 120px;
+            padding: 1rem;
+            border: 2px solid rgba(255, 77, 109, 0.3);
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid rgba(255, 77, 109, 0.3);
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+
+        .country-select:focus,
+        .phone-input:focus {
+            border-color: #ff4d6d;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
+            outline: none;
+        }
+
+        /* עיצוב נוסף לselect2 */
+        .select2-container {
+            min-width: 140px !important;
+            min-height: 51px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 58px !important;
+            padding: 1rem !important;
+            border: 2px solid rgba(255, 77, 109, 0.3) !important;
+            border-radius: 10px !important;
+            font-size: 1.1em !important;
+            background: #f8f9ff !important;
+            display: flex !important;
+            align-items: center !important;
+            box-sizing: border-box !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #757575 !important;
+            line-height: normal !important;
+            padding-left: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .select2-dropdown {
+            border: 2px solid rgba(255, 77, 109, 0.3) !important;
+            border-radius: 10px !important;
+            background: #f8f9ff !important;
+            font-size: 0.6em !important;
+        }
+
+        .select2-results__option {
+            padding: 0.5rem !important;
+            color: #757575 !important;
+            font-size: 1.1em !important;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: rgba(255, 77, 109, 0.1) !important;
+            color: #ff4d6d !important;
+        }
+
+        /* התאמת גובה הקונטיינר */
+        .phone-input-container {
+            display: flex;
+            align-items: center !important;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem auto;
+        }
+
+        /* הסתרת החץ המקורי של Select2 */
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            display: none !important;
+        }
+
+        /* עיצוב מחדש של אזור החץ */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            right: 10px !important;
+            width: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* הוספת החץ החדש */
+        .select2-container--default .select2-selection--single .select2-selection__arrow::after {
+            display: none !important;
+        }
+
+        /* שימוש בחץ ברירת המחדל */
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            display: block !important;
+            border-color: #888 transparent transparent transparent !important;
+            border-style: solid !important;
+            border-width: 5px 4px 0 4px !important;
+            height: 0 !important;
+            left: 50% !important;
+            margin-left: -4px !important;
+            margin-top: -2px !important;
+            position: absolute !important;
+            top: 50% !important;
+            width: 0 !important;
+        }
+
+        .select2-search--dropdown .select2-search__field::placeholder {
+            color: #757575 !important;
+            opacity: 0.7 !important;
+        }
+
+        /* מיקום הדרופדאון */
+        .select2-container--open .select2-dropdown {
+            margin-top: 0 !important;
+            border: 2px solid rgba(255, 77, 109, 0.3) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* וידוא שהדרופדאון מעל אלמנטים אחרים */
+        .select2-container--open .select2-dropdown {
+            z-index: 9999 !important;
+        }
+
+        /* עיצוב תיבת החיפוש בדרופדאון */
+        .select2-search--dropdown .select2-search__field {
+            padding: 0.5rem !important;
+            border: 2px solid rgba(255, 77, 109, 0.3) !important;
+            border-radius: 10px !important;
+            font-size: 1.1em !important;
+            background: #f8f9ff !important;
+        }
+
+        .select2-search--dropdown .select2-search__field::placeholder {
+            color: #757575 !important;
+            opacity: 0.7 !important;
+        }
+
+        .worth-it-wrapper ul {
+            font-size: 1.7em;
+            /* הגדלת הפונט פי 2 (מ-1.2em ל-2.4em) */
+            text-align: center;
+            list-style: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 1.5rem auto;
+        }
+
+        .worth-it-wrapper ul li {
+            margin-bottom: 0.7rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .worth-it-wrapper ul li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        /* הגדרת הכותרת עצמה - החזרה למצב הקודם */
+        .section-title.expanding-title.active.shrink {
+            font-size: 2.5em !important;
+            transition: all 0.7s ease !important;
+            opacity: 1 !important;
+            transform: scale(1) !important;
+            color: #ffffff;
+            /* החזרת הצבע המקורי */
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+            /* החזרת הצל המקורי */
+        }
+    </style>
+</head>
+
+<body>
+    <section id="main-content">
+        <!-- First Section (Opening) -->
+        <div class="lang-content en">
+            <div id="main-hero">
+                <div class="stars"></div>
+                <div class="waves"></div>
+
+                <div class="lang-selector">
+                    <span id="current-lang">
+                        <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="flag-icon">
+                        English
+                    </span>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <div onclick="switchLang('en')">
+                            <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="flag-icon">
+                            English
+                        </div>
+                        <div onclick="switchLang('th')">
+                            <img src="https://flagcdn.com/w20/th.png" alt="Thailand flag" class="flag-icon">
+                            ไทย
+                        </div>
+                        <div onclick="switchLang('fr')">
+                            <img src="https://flagcdn.com/w20/fr.png" alt="French flag" class="flag-icon">
+                            Français
+                        </div>
+                        <div onclick="switchLang('ru')">
+                            <img src="https://flagcdn.com/w20/ru.png" alt="Russian flag" class="flag-icon">
+                            Русский
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center-wrapper">
+                    <h2 class="headline fade-in">Meet ExpatsClub</h2>
+                    <div id="dynamic-text">
+                        <span id="phrase1">More clients,</span>
+                        <span id="phrase2">more income,</span>
+                        <span id="phrase3">no commitments.</span>
+                    </div>
+                </div>
+
+                <div class="scroll-hint-wrapper">
+                    <div class="scroll-hint" onclick="scrollToSection('who-we-are')">↓ Scroll down to learn more ↓</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Section (Who we are) -->
+        <div id="who-we-are" class="section-container white-section">
+            <div class="title-wrapper">
+                <h2 class="section-title expanding-title">Who we are?</h2>
+            </div>
+            <div class="content-wrapper fade-up">
+                <p class="intro-text elegant-font">
+                    An innovative platform connecting local businesses with the expat community in Koh Samui.<br><br>
+                    <strong>We drive loyal customer traffic to your business!</strong>
+                </p>
+                <button onclick="scrollToForm()">Let's Do This!</button>
+            </div>
+        </div>
+
+        <!-- Third Section (How it works?) -->
+        <div class="fade-in colored-section">
+            <h2 class="section-title step" id="step0">How it works?</h2>
+            <div class="interactive-steps">
+                <div class="step-container">
+                    <div class="step" id="step1">Advertise your business on our platform – for <strong>free</strong>.
+                    </div>
+                    <div class="arrow-hint">⬇</div>
+                    <div class="step" id="step2">We expose your business to a targeted audience.</div>
+                    <div class="arrow-hint">⬇</div>
+                    <div class="step" id="step3">You pay a commission only on actual transactions.</div>
+                </div>
+            </div>
+            <button onclick="scrollToForm()">Make It Happen!</button>
+        </div>
+
+        <!-- Fourth Section (Why businesses love ExpatsClub) -->
+        <div class="fade-in white-section">
+            <h2 class="section-title">Why us?</h2>
+            <div style="text-align: center;">
+                <ul class="animated-advantages">
+                    <li class="advantage-item">Performance-based model only.</li>
+                    <li class="advantage-item">Transparent system – track every deal, customer, and revenue.</li>
+                    <li class="advantage-item">Easy to manage – generate smart reports and improve customer experience.
+                    </li>
+                    <li class="advantage-item">Organic growth – recurring and new clients with zero ad effort.</li>
+                    <li class="advantage-item">Even during Low Season – we keep bringing clients to you.</li>
+                </ul>
+            </div>
+            <button onclick="scrollToForm()">Yes! I Want Traffic</button>
+        </div>
+
+        <!-- Fifth Section (Why it's worth it) -->
+        <div class="fade-in colored-section">
+            <h2 class="section-title worth-it-title">Why it's worth it?</h2>
+            <div class="worth-it-wrapper">
+                <ul style="text-align: center;">
+                    <li>No setup cost or commitment.</li>
+                    <li>Every client you refer earns you money for life.</li>
+                    <li>Fair model - Pay only for success.</li>
+                </ul>
+                <button onclick="scrollToForm()">More Clients? Yes Please!</button>
+            </div>
+        </div>
+
+        <!-- Sixth Section (Take action now) -->
+        <div class="fade-in white-section">
+            <h2 class="section-title action-title">Take action now</h2>
+            <p class="action-subtitle">Fill out the form – we'll bring customers to you!</p>
+
+            <!-- הטופס עובר לכאן -->
+            <form action="https://formspree.io/f/xleqkqoz" method="POST" id="contact-form"
+                class="form-container fade-in">
+                <input type="text" name="Full Name" placeholder="Full Name" required />
+                <input type="text" name="Business Name" placeholder="Business Name" required />
+                <select name="Business Location" required>
+                    <option value="" disabled selected style="color: #757575;">Select Business Location</option>
+                    <option value="Lamai">Lamai</option>
+                    <option value="Chaweng">Chaweng</option>
+                    <option value="Bophut">Bophut</option>
+                    <option value="Maenam">Maenam</option>
+                    <option value="Choeng Mon">Choeng Mon</option>
+                    <option value="Bang Rak">Bang Rak</option>
+                    <option value="Big Buddha">Big Buddha</option>
+                    <option value="Fisherman Village">Fisherman Village</option>
+                    <option value="Bangpo">Bangpo</option>
+                    <option value="Lipa Noi">Lipa Noi</option>
+                    <option value="Taling Ngam">Taling Ngam</option>
+                    <option value="Nathon">Nathon</option>
+                    <option value="Hua Thanon">Hua Thanon</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div class="phone-input-container">
+                    <select class="country-select" name="CountryCode" required>
+                        <option value="" disabled>Country Code</option>
+                        <option value="+93" data-country="Afghanistan">Afghanistan (+93)</option>
+                        <option value="+355" data-country="Albania">Albania (+355)</option>
+                        <option value="+213" data-country="Algeria">Algeria (+213)</option>
+                        <option value="+376" data-country="Andorra">Andorra (+376)</option>
+                        <option value="+244" data-country="Angola">Angola (+244)</option>
+                        <option value="+1" data-country="Antigua and Barbuda">Antigua and Barbuda (+1)</option>
+                        <option value="+54" data-country="Argentina">Argentina (+54)</option>
+                        <option value="+374" data-country="Armenia">Armenia (+374)</option>
+                        <option value="+61" data-country="Australia">Australia (+61)</option>
+                        <option value="+43" data-country="Austria">Austria (+43)</option>
+                        <option value="+994" data-country="Azerbaijan">Azerbaijan (+994)</option>
+                        <option value="+1" data-country="Bahamas">Bahamas (+1)</option>
+                        <option value="+973" data-country="Bahrain">Bahrain (+973)</option>
+                        <option value="+880" data-country="Bangladesh">Bangladesh (+880)</option>
+                        <option value="+1" data-country="Barbados">Barbados (+1)</option>
+                        <option value="+375" data-country="Belarus">Belarus (+375)</option>
+                        <option value="+32" data-country="Belgium">Belgium (+32)</option>
+                        <option value="+501" data-country="Belize">Belize (+501)</option>
+                        <option value="+229" data-country="Benin">Benin (+229)</option>
+                        <option value="+975" data-country="Bhutan">Bhutan (+975)</option>
+                        <option value="+591" data-country="Bolivia">Bolivia (+591)</option>
+                        <option value="+387" data-country="Bosnia and Herzegovina">Bosnia and Herzegovina (+387)
+                        </option>
+                        <option value="+267" data-country="Botswana">Botswana (+267)</option>
+                        <option value="+55" data-country="Brazil">Brazil (+55)</option>
+                        <option value="+673" data-country="Brunei">Brunei (+673)</option>
+                        <option value="+359" data-country="Bulgaria">Bulgaria (+359)</option>
+                        <option value="+226" data-country="Burkina Faso">Burkina Faso (+226)</option>
+                        <option value="+257" data-country="Burundi">Burundi (+257)</option>
+                        <option value="+855" data-country="Cambodia">Cambodia (+855)</option>
+                        <option value="+237" data-country="Cameroon">Cameroon (+237)</option>
+                        <option value="+1" data-country="Canada">Canada (+1)</option>
+                        <option value="+238" data-country="Cape Verde">Cape Verde (+238)</option>
+                        <option value="+236" data-country="Central African Republic">Central African Republic (+236)
+                        </option>
+                        <option value="+235" data-country="Chad">Chad (+235)</option>
+                        <option value="+56" data-country="Chile">Chile (+56)</option>
+                        <option value="+86" data-country="China">China (+86)</option>
+                        <option value="+57" data-country="Colombia">Colombia (+57)</option>
+                        <option value="+269" data-country="Comoros">Comoros (+269)</option>
+                        <option value="+242" data-country="Congo">Congo (+242)</option>
+                        <option value="+506" data-country="Costa Rica">Costa Rica (+506)</option>
+                        <option value="+385" data-country="Croatia">Croatia (+385)</option>
+                        <option value="+53" data-country="Cuba">Cuba (+53)</option>
+                        <option value="+357" data-country="Cyprus">Cyprus (+357)</option>
+                        <option value="+420" data-country="Czech Republic">Czech Republic (+420)</option>
+                        <option value="+45" data-country="Denmark">Denmark (+45)</option>
+                        <option value="+253" data-country="Djibouti">Djibouti (+253)</option>
+                        <option value="+1" data-country="Dominica">Dominica (+1)</option>
+                        <option value="+1" data-country="Dominican Republic">Dominican Republic (+1)</option>
+                        <option value="+670" data-country="East Timor">East Timor (+670)</option>
+                        <option value="+593" data-country="Ecuador">Ecuador (+593)</option>
+                        <option value="+20" data-country="Egypt">Egypt (+20)</option>
+                        <option value="+503" data-country="El Salvador">El Salvador (+503)</option>
+                        <option value="+240" data-country="Equatorial Guinea">Equatorial Guinea (+240)</option>
+                        <option value="+291" data-country="Eritrea">Eritrea (+291)</option>
+                        <option value="+372" data-country="Estonia">Estonia (+372)</option>
+                        <option value="+251" data-country="Ethiopia">Ethiopia (+251)</option>
+                        <option value="+679" data-country="Fiji">Fiji (+679)</option>
+                        <option value="+358" data-country="Finland">Finland (+358)</option>
+                        <option value="+33" data-country="France">France (+33)</option>
+                        <option value="+241" data-country="Gabon">Gabon (+241)</option>
+                        <option value="+220" data-country="Gambia">Gambia (+220)</option>
+                        <option value="+995" data-country="Georgia">Georgia (+995)</option>
+                        <option value="+49" data-country="Germany">Germany (+49)</option>
+                        <option value="+233" data-country="Ghana">Ghana (+233)</option>
+                        <option value="+30" data-country="Greece">Greece (+30)</option>
+                        <option value="+1" data-country="Grenada">Grenada (+1)</option>
+                        <option value="+502" data-country="Guatemala">Guatemala (+502)</option>
+                        <option value="+224" data-country="Guinea">Guinea (+224)</option>
+                        <option value="+245" data-country="Guinea-Bissau">Guinea-Bissau (+245)</option>
+                        <option value="+592" data-country="Guyana">Guyana (+592)</option>
+                        <option value="+509" data-country="Haiti">Haiti (+509)</option>
+                        <option value="+504" data-country="Honduras">Honduras (+504)</option>
+                        <option value="+36" data-country="Hungary">Hungary (+36)</option>
+                        <option value="+354" data-country="Iceland">Iceland (+354)</option>
+                        <option value="+91" data-country="India">India (+91)</option>
+                        <option value="+62" data-country="Indonesia">Indonesia (+62)</option>
+                        <option value="+98" data-country="Iran">Iran (+98)</option>
+                        <option value="+964" data-country="Iraq">Iraq (+964)</option>
+                        <option value="+353" data-country="Ireland">Ireland (+353)</option>
+                        <option value="+972" data-country="Israel">Israel (+972)</option>
+                        <option value="+39" data-country="Italy">Italy (+39)</option>
+                        <option value="+225" data-country="Ivory Coast">Ivory Coast (+225)</option>
+                        <option value="+1" data-country="Jamaica">Jamaica (+1)</option>
+                        <option value="+81" data-country="Japan">Japan (+81)</option>
+                        <option value="+962" data-country="Jordan">Jordan (+962)</option>
+                        <option value="+7" data-country="Kazakhstan">Kazakhstan (+7)</option>
+                        <option value="+254" data-country="Kenya">Kenya (+254)</option>
+                        <option value="+686" data-country="Kiribati">Kiribati (+686)</option>
+                        <option value="+850" data-country="North Korea">North Korea (+850)</option>
+                        <option value="+82" data-country="South Korea">South Korea (+82)</option>
+                        <option value="+965" data-country="Kuwait">Kuwait (+965)</option>
+                        <option value="+996" data-country="Kyrgyzstan">Kyrgyzstan (+996)</option>
+                        <option value="+856" data-country="Laos">Laos (+856)</option>
+                        <option value="+371" data-country="Latvia">Latvia (+371)</option>
+                        <option value="+961" data-country="Lebanon">Lebanon (+961)</option>
+                        <option value="+266" data-country="Lesotho">Lesotho (+266)</option>
+                        <option value="+232" data-country="Liberia">Liberia (+232)</option>
+                        <option value="+218" data-country="Libya">Libya (+218)</option>
+                        <option value="+423" data-country="Liechtenstein">Liechtenstein (+423)</option>
+                        <option value="+370" data-country="Lithuania">Lithuania (+370)</option>
+                        <option value="+352" data-country="Luxembourg">Luxembourg (+352)</option>
+                        <option value="+389" data-country="Macedonia">Macedonia (+389)</option>
+                        <option value="+261" data-country="Madagascar">Madagascar (+261)</option>
+                        <option value="+265" data-country="Malawi">Malawi (+265)</option>
+                        <option value="+60" data-country="Malaysia">Malaysia (+60)</option>
+                        <option value="+960" data-country="Maldives">Maldives (+960)</option>
+                        <option value="+223" data-country="Mali">Mali (+223)</option>
+                        <option value="+356" data-country="Malta">Malta (+356)</option>
+                        <option value="+692" data-country="Marshall Islands">Marshall Islands (+692)</option>
+                        <option value="+222" data-country="Mauritania">Mauritania (+222)</option>
+                        <option value="+230" data-country="Mauritius">Mauritius (+230)</option>
+                        <option value="+52" data-country="Mexico">Mexico (+52)</option>
+                        <option value="+691" data-country="Micronesia">Micronesia (+691)</option>
+                        <option value="+373" data-country="Moldova">Moldova (+373)</option>
+                        <option value="+377" data-country="Monaco">Monaco (+377)</option>
+                        <option value="+976" data-country="Mongolia">Mongolia (+976)</option>
+                        <option value="+382" data-country="Montenegro">Montenegro (+382)</option>
+                        <option value="+212" data-country="Morocco">Morocco (+212)</option>
+                        <option value="+258" data-country="Mozambique">Mozambique (+258)</option>
+                        <option value="+95" data-country="Myanmar">Myanmar (+95)</option>
+                        <option value="+264" data-country="Namibia">Namibia (+264)</option>
+                        <option value="+674" data-country="Nauru">Nauru (+674)</option>
+                        <option value="+977" data-country="Nepal">Nepal (+977)</option>
+                        <option value="+31" data-country="Netherlands">Netherlands (+31)</option>
+                        <option value="+64" data-country="New Zealand">New Zealand (+64)</option>
+                        <option value="+505" data-country="Nicaragua">Nicaragua (+505)</option>
+                        <option value="+227" data-country="Niger">Niger (+227)</option>
+                        <option value="+234" data-country="Nigeria">Nigeria (+234)</option>
+                        <option value="+47" data-country="Norway">Norway (+47)</option>
+                        <option value="+968" data-country="Oman">Oman (+968)</option>
+                        <option value="+92" data-country="Pakistan">Pakistan (+92)</option>
+                        <option value="+680" data-country="Palau">Palau (+680)</option>
+                        <option value="+507" data-country="Panama">Panama (+507)</option>
+                        <option value="+675" data-country="Papua New Guinea">Papua New Guinea (+675)</option>
+                        <option value="+595" data-country="Paraguay">Paraguay (+595)</option>
+                        <option value="+51" data-country="Peru">Peru (+51)</option>
+                        <option value="+63" data-country="Philippines">Philippines (+63)</option>
+                        <option value="+48" data-country="Poland">Poland (+48)</option>
+                        <option value="+351" data-country="Portugal">Portugal (+351)</option>
+                        <option value="+974" data-country="Qatar">Qatar (+974)</option>
+                        <option value="+40" data-country="Romania">Romania (+40)</option>
+                        <option value="+7" data-country="Russia">Russia (+7)</option>
+                        <option value="+250" data-country="Rwanda">Rwanda (+250)</option>
+                        <option value="+1" data-country="Saint Kitts and Nevis">Saint Kitts and Nevis (+1)</option>
+                        <option value="+1" data-country="Saint Lucia">Saint Lucia (+1)</option>
+                        <option value="+1" data-country="Saint Vincent and the Grenadines">Saint Vincent and the
+                            Grenadines (+1)</option>
+                        <option value="+685" data-country="Samoa">Samoa (+685)</option>
+                        <option value="+378" data-country="San Marino">San Marino (+378)</option>
+                        <option value="+239" data-country="Sao Tome and Principe">Sao Tome and Principe (+239)</option>
+                        <option value="+966" data-country="Saudi Arabia">Saudi Arabia (+966)</option>
+                        <option value="+221" data-country="Senegal">Senegal (+221)</option>
+                        <option value="+381" data-country="Serbia">Serbia (+381)</option>
+                        <option value="+248" data-country="Seychelles">Seychelles (+248)</option>
+                        <option value="+232" data-country="Sierra Leone">Sierra Leone (+232)</option>
+                        <option value="+65" data-country="Singapore">Singapore (+65)</option>
+                        <option value="+421" data-country="Slovakia">Slovakia (+421)</option>
+                        <option value="+386" data-country="Slovenia">Slovenia (+386)</option>
+                        <option value="+677" data-country="Solomon Islands">Solomon Islands (+677)</option>
+                        <option value="+252" data-country="Somalia">Somalia (+252)</option>
+                        <option value="+27" data-country="South Africa">South Africa (+27)</option>
+                        <option value="+211" data-country="South Sudan">South Sudan (+211)</option>
+                        <option value="+34" data-country="Spain">Spain (+34)</option>
+                        <option value="+94" data-country="Sri Lanka">Sri Lanka (+94)</option>
+                        <option value="+249" data-country="Sudan">Sudan (+249)</option>
+                        <option value="+597" data-country="Suriname">Suriname (+597)</option>
+                        <option value="+268" data-country="Swaziland">Swaziland (+268)</option>
+                        <option value="+46" data-country="Sweden">Sweden (+46)</option>
+                        <option value="+41" data-country="Switzerland">Switzerland (+41)</option>
+                        <option value="+963" data-country="Syria">Syria (+963)</option>
+                        <option value="+992" data-country="Tajikistan">Tajikistan (+992)</option>
+                        <option value="+255" data-country="Tanzania">Tanzania (+255)</option>
+                        <option value="+66" data-country="Thailand" selected>Thailand (+66)</option>
+                        <option value="+228" data-country="Togo">Togo (+228)</option>
+                        <option value="+676" data-country="Tonga">Tonga (+676)</option>
+                        <option value="+1" data-country="Trinidad and Tobago">Trinidad and Tobago (+1)</option>
+                        <option value="+216" data-country="Tunisia">Tunisia (+216)</option>
+                        <option value="+90" data-country="Turkey">Turkey (+90)</option>
+                        <option value="+993" data-country="Turkmenistan">Turkmenistan (+993)</option>
+                        <option value="+688" data-country="Tuvalu">Tuvalu (+688)</option>
+                        <option value="+256" data-country="Uganda">Uganda (+256)</option>
+                        <option value="+380" data-country="Ukraine">Ukraine (+380)</option>
+                        <option value="+971" data-country="United Arab Emirates">United Arab Emirates (+971)</option>
+                        <option value="+44" data-country="United Kingdom">United Kingdom (+44)</option>
+                        <option value="+1" data-country="United States">United States (+1)</option>
+                        <option value="+598" data-country="Uruguay">Uruguay (+598)</option>
+                        <option value="+998" data-country="Uzbekistan">Uzbekistan (+998)</option>
+                        <option value="+678" data-country="Vanuatu">Vanuatu (+678)</option>
+                        <option value="+58" data-country="Venezuela">Venezuela (+58)</option>
+                        <option value="+84" data-country="Vietnam">Vietnam (+84)</option>
+                        <option value="+967" data-country="Yemen">Yemen (+967)</option>
+                        <option value="+260" data-country="Zambia">Zambia (+260)</option>
+                        <option value="+263" data-country="Zimbabwe">Zimbabwe (+263)</option>
+                    </select>
+                    <input type="tel" name="WhatsAppNumber" class="phone-input" placeholder="WhatsApp Number"
+                        pattern="[0-9]*" inputmode="numeric"
+                        oninvalid="this.setCustomValidity('Please enter numbers only')"
+                        oninput="this.setCustomValidity('')" required>
+                </div>
+                <button type="submit">Apply Now</button>
+                <p>Join the platform for <strong>free</strong>.<br>
+                    The future of business marketing in Koh Samui starts here.</p>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const langSelector = document.querySelector('.lang-selector');
+        const langDropdown = document.getElementById('lang-dropdown');
+        const currentLang = document.getElementById('current-lang');
+        const contents = document.querySelectorAll('.lang-content');
+
+        langSelector.addEventListener('click', () => {
+            langDropdown.style.display = langDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        function switchLang(lang) {
+            switch (lang) {
+                case 'en':
+                    window.location.href = '/index.html';
+                    break;
+                case 'th':
+                    window.location.href = '/th/index.html';
+                    break;
+                case 'fr':
+                    window.location.href = '/fr/index.html';
+                    break;
+                case 'ru':
+                    window.location.href = '/ru/index.html';
+                    break;
+            }
+        }
+
+        function scrollToForm() {
+            document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const spans = [
+            document.getElementById('phrase1'),
+            document.getElementById('phrase2'),
+            document.getElementById('phrase3')
+        ];
+
+        function fadeText() {
+            setTimeout(() => {
+                spans.forEach((span, index) => {
+                    setTimeout(() => {
+                        span.style.opacity = 1;
+                    }, index * 1000);
+                });
+            }, 1000);
+        }
+
+        function handleStepsAnimation() {
+            const steps = document.querySelectorAll('.step');
+            const arrows = document.querySelectorAll('.arrow-hint');
+            let currentStep = 0;
+
+            const showNextStep = () => {
+                if (currentStep < steps.length) {
+                    console.log('Current step:', currentStep);
+
+                    // הצג את הטקסט הנוכחי
+                    steps[currentStep].classList.add('visible');
+
+                    // הצג חץ אחרי כל טקסט (חוץ מהכותרת והמשפט האחרון)
+                    if (currentStep > 0 && currentStep < steps.length - 1) {
+                        const arrowIndex = Math.min(currentStep - 1, arrows.length - 1);
+                        console.log('Showing arrow for step:', arrowIndex);
+
+                        if (arrows[arrowIndex]) {  // בדיקה שהחץ קיים
+                            setTimeout(() => {
+                                arrows[arrowIndex].classList.add('visible');
+                            }, 300);
+                        }
+                    }
+
+                    currentStep++;
+
+                    if (currentStep < steps.length) {
+                        setTimeout(showNextStep, 800);
+                    }
+                }
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && currentStep === 0) {
+                        showNextStep();
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            const section = document.querySelector('.colored-section');
+            observer.observe(section);
+        }
+
+        function handleWhoWeAreAnimation() {
+            const section = document.getElementById('who-we-are');
+            const title = section.querySelector('.expanding-title');
+            const content = section.querySelector('.content-wrapper');
+            let titleAnimated = false;
+            let contentAnimated = false;
+
+            function checkScroll() {
+                const rect = section.getBoundingClientRect();
+                const triggerPoint = window.innerHeight * 0.7;
+
+                if (rect.top <= triggerPoint && !titleAnimated) {
+                    title.classList.add('active');
+                    titleAnimated = true;
+
+                    setTimeout(() => {
+                        title.classList.add('shrink');
+                        setTimeout(() => {
+                            content.classList.add('active');
+                            contentAnimated = true;
+                        }, 300);
+                    }, 1000);
+                }
+            }
+
+            window.addEventListener('scroll', checkScroll);
+            checkScroll();
+        }
+
+        function handleAdvantagesAnimation() {
+            const advantages = document.querySelectorAll('.advantage-item');
+            let currentAdvantage = 0;
+
+            const animateAdvantage = () => {
+                if (currentAdvantage < advantages.length) {
+                    const item = advantages[currentAdvantage];
+                    item.classList.add('appear');
+                    currentAdvantage++;
+
+                    if (currentAdvantage < advantages.length) {
+                        setTimeout(animateAdvantage, 400);
+                    }
+                }
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && currentAdvantage === 0) {
+                        animateAdvantage();
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            const section = document.querySelector('.animated-advantages');
+            observer.observe(section);
+        }
+
+        function handleWorthItAnimation() {
+            const title = document.querySelector('.worth-it-title');
+            const content = document.querySelector('.worth-it-wrapper');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        title.classList.add('active');
+                        setTimeout(() => {
+                            content.classList.add('active');
+                        }, 700);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            observer.observe(title);
+        }
+
+        window.onload = () => {
+            document.querySelector('.headline').classList.add('visible');
+            fadeText();
+            handleStepsAnimation();
+            handleWhoWeAreAnimation();
+            handleAdvantagesAnimation();
+            handleWorthItAnimation();
+            setTimeout(() => {
+                document.querySelector('.scroll-hint-wrapper').style.opacity = '1';
+            }, 3500);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            if (!el.classList.contains('headline')) {
+                observer.observe(el);
+            }
+        });
+
+        // הוספת הגלים לכל הסקשנים חוץ מהראשון
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.white-section, .colored-section');
+
+            sections.forEach(section => {
+                // דילוג על הסקשן הראשון
+                if (section.id === 'main-hero') return;
+
+                // יצירת מיכל לתוכן הקיים
+                const content = section.innerHTML;
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'section-content';
+                contentWrapper.innerHTML = content;
+
+                // הוספת אפקט הגלים
+                const waves = document.createElement('div');
+                waves.className = 'section-waves';
+
+                // ניקוי והוספת האלמנטים החדשים
+                section.innerHTML = '';
+                section.appendChild(waves);
+                section.appendChild(contentWrapper);
+            });
+        });
+
+        // מונע הכנסת תווים שאינם מספרים
+        document.querySelector('.phone-input').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // הופך את ה-select לניתן לחיפוש
+        document.querySelector('.country-select').addEventListener('keydown', function (e) {
+            if (e.key.length === 1) {
+                const options = Array.from(this.options);
+                const searchTerm = e.key.toLowerCase();
+                const option = options.find(opt =>
+                    !opt.disabled && opt.text.toLowerCase().startsWith(searchTerm)
+                );
+                if (option) {
+                    this.value = option.value;
+                }
+            }
+        });
+
+        const select = document.querySelector('.country-select');
+
+        function updateSelectDisplay() {
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption.disabled) {
+                selectedOption.textContent = selectedOption.value;
+            }
+        }
+
+        function restoreFullText() {
+            Array.from(select.options).forEach(option => {
+                if (!option.disabled) {
+                    option.textContent = option.getAttribute('data-country');
+                }
+            });
+        }
+
+        // כשפותחים את הרשימה - מציג טקסט מלא
+        select.addEventListener('mousedown', restoreFullText);
+
+        // כשבוחרים אופציה - מציג רק את הקידומת
+        select.addEventListener('change', updateSelectDisplay);
+
+        // אתחול ראשוני
+        window.addEventListener('load', updateSelectDisplay);
+
+        $(document).ready(function () {
+            $('.country-select').select2({
+                templateResult: formatCountry,
+                templateSelection: formatSelection,
+                language: {
+                    searching: function () {
+                        return "Searching...";
+                    },
+                    inputTooShort: function () {
+                        return "Please enter 1 or more characters";
+                    },
+                    noResults: function () {
+                        return "No results found";
+                    },
+                    searching: function () {
+                        return "Searching...";
+                    }
+                },
+                placeholder: {
+                    id: '-1',
+                    text: 'Search country'
+                }
+            });
+        });
+
+        // פורמט להצגה בדרופדאון
+        function formatCountry(country) {
+            if (!country.id) return country.text;
+            return $(country.element).text(); // מציג את הטקסט המלא
+        }
+
+        // פורמט להצגה בתיבה הנבחרת
+        function formatSelection(country) {
+            if (!country.id) return country.text;
+            return country.element.value; // מציג רק את הקידומת
+        }
+
+        // הוספת ה-placeholder לתיבת החיפוש
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').placeholder = 'Search country';
+        });
+    </script>
+</body>
+
+</html>
