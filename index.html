@@ -1207,6 +1207,18 @@
                             <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="flag-icon">
                             English
                         </div>
+                        <div onclick="switchLang('th')">
+                            <img src="https://flagcdn.com/w20/th.png" alt="Thailand flag" class="flag-icon">
+                            ไทย
+                        </div>
+                        <div onclick="switchLang('fr')">
+                            <img src="https://flagcdn.com/w20/fr.png" alt="French flag" class="flag-icon">
+                            Français
+                        </div>
+                        <div onclick="switchLang('ru')">
+                            <img src="https://flagcdn.com/w20/ru.png" alt="Russian flag" class="flag-icon">
+                            Русский
+                        </div>
                     </div>
                 </div>
 
@@ -1533,9 +1545,20 @@
         });
 
         function switchLang(lang) {
-            currentLang.textContent = lang === 'en' ? 'English' : 'ไทย';
-            contents.forEach(div => div.style.display = div.classList.contains(lang) ? 'block' : 'none');
-            langDropdown.style.display = 'none';
+            switch (lang) {
+                case 'en':
+                    window.location.href = '/index.html';
+                    break;
+                case 'th':
+                    window.location.href = '/th/index.html';
+                    break;
+                case 'fr':
+                    window.location.href = '/fr/index.html';
+                    break;
+                case 'ru':
+                    window.location.href = '/ru/index.html';
+                    break;
+            }
         }
 
         function scrollToForm() {
