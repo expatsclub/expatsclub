@@ -1302,8 +1302,7 @@
             <p class="action-subtitle">Fill out the form – we'll bring customers to you!</p>
 
             <!-- הטופס עובר לכאן -->
-            <form action="https://formspree.io/f/xleqkqoz" method="POST" id="contact-form"
-                class="form-container fade-in">
+            <form id="contact-form" class="form-container fade-in" method="POST">
                 <input type="text" name="Full Name" placeholder="Full Name" required />
                 <input type="text" name="Business Name" placeholder="Business Name" required />
                 <select name="Business Location" required>
@@ -1840,6 +1839,62 @@
         // הוספת ה-placeholder לתיבת החיפוש
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').placeholder = 'Search country';
+        });
+
+        // הוספת קוד JavaScript חדש
+        document.getElementById("contact-form").addEventListener("submit", function (e) {
+            e.preventDefault(); // מונע את השליחה הרגילה של הטופס
+
+            fetch("https://formspree.io/f/xkgjajby", {
+                method: "POST",
+                body: new FormData(e.target),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // הצלחה - הצג הודעת תודה
+                        const form = document.getElementById("contact-form");
+                        form.innerHTML = `
+                        <div class="thank-you-message" style="text-align: center; padding: 2rem;">
+                            <h3 style="color: #ffffff; margin-bottom: 1rem;">Thank you for your submission!</h3>
+                            <p style="color: rgba(255, 255, 255, 0.9);">We'll get back to you within 24 hours.</p>
+                        </div>
+                    `;
+                    } else {
+                        // כישלון - הצג הודעת שגיאה
+                        throw new Error('Form submission failed');
+                    }
+                })
+                .catch(error => {
+                    alert("Oops! There was a problem submitting your form. Please try again.");
+                });
+        });
+
+        // הוספת הקוד החדש לטיפול בטופס
+        $(document).ready(function () {
+            $("#contact-form").on("submit", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "https://formspree.io/f/xkgjajby",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function () {
+                        $("#contact-form").html(`
+                            <div class="thank-you-message" style="text-align: center; padding: 2rem;">
+                                <h3 style="color: #ffffff; margin-bottom: 1rem;">Thanks! You're officially on our list!</h3>
+                                <p style="color: rgba(255, 255, 255, 0.9);">we'll be in touch soon.</p>
+                            </div>
+                        `);
+                    },
+                    error: function () {
+                        alert("Oops! There was a problem submitting your form. Please try again.");
+                    }
+                });
+            });
         });
     </script>
 </body>
